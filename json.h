@@ -1,11 +1,11 @@
+
 #ifndef JSON_H
 #define JSON_H
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef __cplusplus
-typedef char*                                   string;
 typedef unsigned char                           bool;
 #define true                                    (1)
 #define false                                   (0)
@@ -13,45 +13,37 @@ typedef unsigned char                           bool;
 #define FALSE                                   false
 #endif
 
-#define new(x)                                  (x *) malloc(sizeof(x))
-#define newWithSize(x, y)                       (x *) malloc(y * sizeof(x))
-#define renewWithSize(x, y, z)                  (y *) realloc(x, z * sizeof(y))
-#define isWhitespace(x)                         x == '\r' || x == '\n' || x == '\t' || x == ' '
-#define removeWhitespace(x)                     while(isWhitespace(*x)) x++
-#define removeWhitespaceCalcOffset(x, y)        while(isWhitespace(*x)) { x++; y++; }
-
-typedef char                                    character;
-
 struct _jsonobject;
 struct _jsonpair;
 union _jsonvalue;
 
-typedef enum {
+typedef enum
+{
     JSON_STRING = 0,
     JSON_OBJECT
 } JSONValueType;
 
-typedef struct _jsonobject {
+typedef struct _jsonobject
+{
     struct _jsonpair *pairs;
     int count;
 } JSONObject;
 
-typedef struct _jsonpair {
-    string key;
+typedef struct _jsonpair
+{
+    char * key;
     union _jsonvalue *value;
     JSONValueType type;
 } JSONPair;
 
-typedef union _jsonvalue {
-    string stringValue;
+typedef union _jsonvalue
+{
+    char * stringValue;
     struct _jsonobject *jsonObject;
 } JSONValue;
 
-JSONObject *parseJSON(string);
-void freeJSONFromMemory(JSONObject *);
-static int strNextOccurence(string, char);
-static JSONObject * _parseJSON(string, int *);
-
-
+extern JSONObject *parseJSON(const char *);
+extern void freeJSONFromMemory(JSONObject *);
 
 #endif
+
